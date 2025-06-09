@@ -1,50 +1,49 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int main() {
-    int t;
-    cin >> t;
-    while(t--) {
-        int n;
-        scanf("%d", &n);
-        int arr[20010]  = {0};
-        queue<int> pos[20010];
-        for(int i = 0; i < n; i++) {
-            scanf("%d", &arr[i]);
-            pos[arr[i]].push(i);
+void solve() {
+    vector<int> v, distin;
+    int n;
+    scanf("%d", &n);
+    unordered_map<int, int> fre;
+    for(int i = 0; i < n; i++) {
+        int t = 0;
+        scanf("%d", &t);
+        v.push_back(t);
+        fre[t]++;
+        if(fre[t] == 1) {
+            distin.push_back(1);
         }
-        int ret = 1;
-        int begin = 0;
-        int last = 0;
-        while(last != n - 1) {
-            int maxp = last;
-            int value = 1;
-            while(begin <= last) {
-                if(!pos[arr[begin]].empty()) {
-                    int t = pos[arr[begin]].front();
-                    pos[arr[begin]].pop();
-                    if(t < last) {
-                        continue;
-                    }
-                    else{
-                        maxp = max(maxp, t);
-                        begin++;
-                    }
-                }
-                else {
-                    value = 0;
+        else {
+            distin.push_back(0);
+        }
+        distin[i] += (i ? distin[i - 1] : 0);
+    }
+    fre.clear();
+    int ret = 0;
+    int dt = 0;
+    int end = n - 1;
+    int j = end;
+    while(j >= 0) {
+        for(j = end; j >= 0; j--) {
+            fre[v[j]]++;
+            if(fre[v[j]] == 1) {
+                dt++;
+                if(dt == distin[end]) {
+                    ret++;
+                    end = j - 1;
+                    fre.clear();
+                    dt = 0;
                     break;
                 }
             }
-            if(value) {
-                ret++;
-                last = maxp;
-            }
-            else {
-                break;
-            }
         }
-        printf("%d\n", ret);
     }
+    printf("%d\n", ret);
+}
+int main() {
+    int t;
+    cin >> t;
+    while(t--) solve();
     return 0;
 }

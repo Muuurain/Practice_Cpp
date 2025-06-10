@@ -6,6 +6,7 @@ void solve() {
     int n;
     scanf("%d", &n);
     unordered_map<int, int> fre;
+    
     for(int i = 0; i < n; i++) {
         int t = 0;
         scanf("%d", &t);

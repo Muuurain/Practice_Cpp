@@ -14,7 +14,7 @@ void solve() {
     int y = (arr[1] - (2 * arr[0])) / ((n - 1) - 2 * n);
     if(x < 0 || y < 0) {
         cout << "NO" <<endl;
-        return;
+        return; 
     }
     for(int i = 0; i < n; i++) {
         arr[i] -= x * (i + 1) + y * (n - i);

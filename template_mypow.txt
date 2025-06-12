@@ -1,0 +1,10 @@
+ll pw(int n) {
+    ll ret = 1;
+    ll a = 2;
+    while(n) {
+        if(n & 1) ret = (ret * a) % MOD;
+        a = a * a % MOD;
+        n >>= 1;
+    }
+    return ret;
+}

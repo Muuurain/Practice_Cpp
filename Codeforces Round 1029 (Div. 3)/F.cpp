@@ -13,7 +13,7 @@ void dfs(int n, int par, int len){
     if(edge[n].size() > 2) {
         lca = len;
     }
-    for(int i = 0; i < edge[n].size(); i++) {
+    for(auto i = 0; i < edge[n].size(); i++) {
         if(edge[n][i] != par) {
             dfs(edge[n][i], n, len + 1);
         }

@@ -2,9 +2,9 @@
 using namespace std;
 
 
-typedef long long ll;
-ll pow2[40];
-ll pw(int n) {
+typedef unsigned long long ll;
+ll pow2[70];
+ll pw(ll n) {
     ll ret = 1;
     ll a = 2;
     while(n) {
@@ -25,40 +25,38 @@ void solve() {
         cin >> num[i];
         ll t = num[i];
         ret += __builtin_popcountll(t);
-        ll cnt = 0;
+        ll cnt = 1;
         if(t == 0) {
             bn[0]++;
         }
         while(t) {
             if(t & 1) {
-                if(cnt) {
-                    bn[cnt]++;
-                    maxdig = max(maxdig, cnt);
-                    break;
-                }
+                maxdig = max(maxdig, cnt);
+                break;
             }
+            bn[cnt]++;            
             cnt++;
             t >>= 1;
         }
     }
-    for(int i = 1; i < 70; i++) {
+    for(ll i = 1; i < 70; i++) {
             bn[i] += bn[0];
     }
-    for(int i = 1; i <= maxdig; i++) {
+    if(bn[0]) {
+        maxdig = 69;
+    }
+    for(ll i = 1; i <= maxdig; i++) {
         ll t = 0;
         if(i == 1) t = i * bn[i];
         else {
             t = (pow2[i] - pow2[i - 1]) * bn[i];
         }
         if(t <= k) {
-            ret += i * bn[i];
-            if(i == 1) k -= t;
-            else {
-                k -= t;
-            }
+            ret += bn[i];
+            k -= t;
         }
         else {
-            ll nd = pow2[i] - pow2[i - 1];
+            ll nd = t / bn[i];
             ret += k / nd;
             break;
         }
@@ -69,9 +67,9 @@ void solve() {
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(NULL);
-    int t;
+    ll t;
     cin >> t;
-    for(int i = 0; i < 40; i++) {
+    for(ll i = 0; i < 65; i++) {
         pow2[i] = pw(i);
     }
     while(t--) solve();

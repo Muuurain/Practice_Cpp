@@ -1,3 +1,13 @@
 __builtin_popcountll(t) // 统计t在二进制下1的数量
 stoi(t) // 将字符串t转化为int
 to_string(t) // 将整数t转化为字符串
+INT_MAX/INT_MIN //表示 int 类型所能存储的最大/最小整数
+LLONG_MAX/LLONG_MIN // 表示 long long 类型所能存储的最大/最小整数
+DBL_MAX/DBL_MIN // 表示 double 类型所能存储的最大/最小实数
+setprecision() /*
+                double num = 3.1415926535;
+                // 输出小数点后2位（四舍五入）
+                cout << fixed << setprecision(2) << num << endl;  // 输出：3.14
+                */
+lower_bound(x) // 返回指向set中第一个不小于（≥）x的元素的迭代器。
+upper_bound(x) // 返回指向set中第一个大于（>）x的元素的迭代器。

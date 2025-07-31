@@ -2,7 +2,7 @@
 using namespace std;
 
 
-typedef unsigned long long ll;
+typedef long long ll;
 ll pow2[70];
 ll pw(ll n) {
     ll ret = 1;
@@ -49,7 +49,7 @@ void solve() {
         ll t = 0;
         if(i == 1) t = i * bn[i];
         else {
-            t = (pow2[i] - pow2[i - 1]) * bn[i];
+            t = pow2[i - 1] * bn[i];
         }
         if(t <= k) {
             ret += bn[i];

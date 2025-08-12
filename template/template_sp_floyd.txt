@@ -1,0 +1,104 @@
+// 图的结构体，使用邻接矩阵表示（适合Floyd算法）
+struct Graph {
+    int V;                  // 顶点数量
+    vector<vector<int>> dist; // 距离矩阵：dist[i][j]表示顶点i到j的最短距离
+    bool hasNegativeCycle;  // 标记图中是否存在负权回路（Floyd算法无法处理）
+
+    // 初始化距离矩阵
+    void initializeDistMatrix() {
+        // 初始时，距离矩阵对角线（顶点到自身）为0
+        for (int i = 0; i < V; ++i) {
+            dist[i][i] = 0;
+        }
+    }
+
+    // 构造函数：初始化图的顶点数量和距离矩阵
+    // 参数：vertices - 顶点数量
+    Graph(int vertices) : V(vertices), hasNegativeCycle(false) {
+        // 初始化距离矩阵为V x V，所有值默认为无穷大（INT_MAX）
+        dist.resize(V, vector<int>(V, INT_MAX));
+        initializeDistMatrix();
+    }
+
+    // 向图中添加一条有向边
+    // 参数：from - 起点，to - 终点，weight - 边的权重（支持负权，但不能有负权回路）
+    void addEdge(int from, int to, int weight) {
+        // 检查顶点索引合法性
+        if (from < 0 || from >= V || to < 0 || to >= V) {
+            cerr << "错误：顶点索引超出范围！" << endl;
+            return;
+        }
+        dist[from][to] = weight; // 直接设置边的权重
+    }
+
+    // Floyd算法核心：计算所有顶点对之间的最短路径
+    void floydWarshall() {
+        // 三重循环：k为中间顶点，i为起点，j为终点
+        // 核心思想：对于每个中间顶点k，更新所有i到j的最短路径为min(原距离, i->k->j的距离)
+        for (int k = 0; k < V; ++k) {               // 中间顶点
+            for (int i = 0; i < V; ++i) {           // 起点
+                for (int j = 0; j < V; ++j) {       // 终点
+                    // 跳过无法到达的情况（避免INT_MAX + 权重导致溢出）
+                    if (dist[i][k] == INT_MAX || dist[k][j] == INT_MAX) {
+                        continue;
+                    }
+
+                    // 松弛操作：更新i到j的最短路径
+                    if (dist[i][j] > dist[i][k] + dist[k][j]) {
+                        dist[i][j] = dist[i][k] + dist[k][j];
+                    }
+                }
+            }
+        }
+
+        // 检测是否存在负权回路：若顶点到自身的距离为负，则存在负权回路
+        for (int i = 0; i < V; ++i) {
+            if (dist[i][i] < 0) {
+                hasNegativeCycle = true;
+                break;
+            }
+        }
+    }
+
+    // 打印所有顶点对之间的最短路径
+    void printAllPairsShortestPaths() {
+        if (hasNegativeCycle) {
+            cout << "图中存在负权回路，无法计算最短路径！" << endl;
+            return;
+        }
+
+        cout << "所有顶点对之间的最短路径距离：" << endl;
+        cout << "格式：起点 -> 终点 : 距离" << endl;
+        for (int i = 0; i < V; ++i) {
+            for (int j = 0; j < V; ++j) {
+                if (i == j) continue; // 跳过顶点到自身的路径（距离为0）
+
+                if (dist[i][j] == INT_MAX) {
+                    cout << i << " -> " << j << " : 不可达" << endl;
+                } else {
+                    cout << i << " -> " << j << " : " << dist[i][j] << endl;
+                }
+            }
+            if (i != V - 1) cout << endl; // 每行顶点输出后换行（最后一行除外）
+        }
+    }
+
+    // 获取顶点i到j的最短距离
+    // 返回：最短距离（INT_MAX表示不可达），若存在负权回路返回-1
+    int getShortestDistance(int i, int j) {
+        if (hasNegativeCycle) {
+            cerr << "图中存在负权回路，无法获取最短路径！" << endl;
+            return -1;
+        }
+        if (i < 0 || i >= V || j < 0 || j >= V) {
+            cerr << "错误：顶点索引超出范围！" << endl;
+            return -1;
+        }
+        return dist[i][j];
+    }
+
+    // 检查图中是否存在负权回路
+    bool hasNegativeCycleDetected() {
+        return hasNegativeCycle;
+    }
+};

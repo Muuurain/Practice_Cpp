@@ -1,0 +1,106 @@
+// 并查集(Disjoint Set Union, DSU)数据结构
+// 也称为Union-Find数据结构，用于高效处理集合的合并与查询操作
+struct DSU {
+    // 存储每个元素的父节点
+    std::vector<int> parent;
+    // 存储每个集合的秩(用于按秩合并优化)
+    std::vector<int> rank;
+    // 存储每个集合的大小
+    std::vector<int> size;
+    // 当前集合的总数
+    int count;
+
+    /**
+     * @brief 构造函数，初始化并查集
+     * @param n 元素的数量，元素编号从0到n-1
+     */
+    DSU(int n) {
+        // 初始化容器大小
+        parent.resize(n);
+        rank.resize(n, 0);      // 初始时所有元素的秩都为0
+        size.resize(n, 1);      // 初始时每个元素自成一个集合，大小为1
+        count = n;              // 初始集合数量等于元素数量
+        
+        // 每个元素的父节点初始化为自身
+        for (int i = 0; i < n; ++i) {
+            parent[i] = i;
+        }
+    }
+
+    /**
+     * @brief 查找元素所属集合的根节点
+     * @param x 要查找的元素
+     * @return 元素x所属集合的根节点
+     * @note 使用路径压缩优化，将查找路径上的所有节点直接指向根节点
+     *       这使得后续查询操作更加高效
+     */
+    int find(int x) {
+        // 递归查找根节点，并在回溯时将x的父节点直接设为根节点(路径压缩)
+        if (parent[x] != x) {
+            parent[x] = find(parent[x]);
+        }
+        return parent[x];
+    }
+
+    /**
+     * @brief 合并两个元素所属的集合
+     * @param x 第一个元素
+     * @param y 第二个元素
+     * @note 使用按秩合并优化，将秩较小的集合合并到秩较大的集合中
+     *       这保证了树的深度不会过大，维持了高效的查询性能
+     */
+    void unite(int x, int y) {
+        // 查找x和y的根节点
+        int rootX = find(x);
+        int rootY = find(y);
+        
+        // 如果已经在同一个集合中，则不需要合并
+        if (rootX == rootY) {
+            return;
+        }
+        
+        // 按秩合并：将秩较小的集合合并到秩较大的集合中
+        if (rank[rootX] < rank[rootY]) {
+            parent[rootX] = rootY;
+            size[rootY] += size[rootX];
+        } else {
+            parent[rootY] = rootX;
+            size[rootX] += size[rootY];
+            // 如果两个集合的秩相等，则合并后根节点的秩加1
+            if (rank[rootX] == rank[rootY]) {
+                rank[rootX]++;
+            }
+        }
+        
+        // 合并后集合总数减1
+        count--;
+    }
+
+    /**
+     * @brief 判断两个元素是否属于同一个集合
+     * @param x 第一个元素
+     * @param y 第二个元素
+     * @return 如果属于同一个集合则返回true，否则返回false
+     */
+    bool isConnected(int x, int y) {
+        return find(x) == find(y);
+    }
+
+    /**
+     * @brief 获取元素x所属集合的大小
+     * @param x 元素x
+     * @return 集合的大小
+     */
+    int getSize(int x) {
+        return size[find(x)];
+    }
+
+    /**
+     * @brief 获取当前集合的总数
+     * @return 集合的总数
+     */
+    int getCount() {
+        return count;
+    }
+};
+    

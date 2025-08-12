@@ -1,0 +1,86 @@
+struct Edge {
+    int to;       // 目标顶点
+    int weight;   // 边的权重
+    
+    // 构造函数，初始化边的目标顶点和权重
+    Edge(int t, int w) : to(t), weight(w) {}
+};
+
+// 图的结构体，使用邻接表表示
+struct Graph {
+    int V;                  // 顶点数量
+    vector<vector<Edge>> adj;  // 邻接表，每个顶点对应一个边的列表
+    
+    // 构造函数，初始化图的顶点数量并分配邻接表空间
+    Graph(int vertices) : V(vertices), adj(vertices) {}
+    
+    // 向图中添加一条无向边
+    // 参数: from-起点, to-终点, weight-边的权重
+    void addEdge(int from, int to, int weight) {
+        // 无向图中，每条边需要添加两次
+        adj[from].emplace_back(to, weight);
+        adj[to].emplace_back(from, weight);
+    }
+    
+    // Prim算法实现，返回最小生成树的总权重
+    int primMST() {
+        // 存储最小生成树中每个顶点的父节点
+        vector<int> parent(V, -1);
+        
+        // 存储从最小生成树到每个顶点的最小边权重
+        vector<int> key(V, INT_MAX);
+        
+        // 标记顶点是否已加入最小生成树
+        vector<bool> inMST(V, false);
+        
+        // 优先队列(最小堆)，用于选择权重最小的边
+        // 存储的是(权重, 顶点)对，优先队列会按权重从小到大排序
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        
+        // 从顶点0开始构建最小生成树
+        key[0] = 0;          // 起始顶点的key值设为0
+        pq.push({0, 0});     // 将起始顶点加入优先队列
+        
+        // 记录最小生成树的总权重
+        int totalWeight = 0;
+        
+        // 计数器，记录已加入最小生成树的顶点数量
+        int count = 0;
+        
+        // 当优先队列不为空且未处理完所有顶点时
+        while (!pq.empty() && count < V) {
+            // 取出权重最小的边对应的顶点
+            int u = pq.top().second;
+            pq.pop();
+            
+            // 如果该顶点已在最小生成树中，则跳过
+            if (inMST[u]) continue;
+            
+            // 将该顶点加入最小生成树
+            inMST[u] = true;
+            totalWeight += key[u];
+            count++;
+            
+            // 遍历该顶点的所有邻接边
+            for (const Edge& edge : adj[u]) {
+                int v = edge.to;          // 邻接顶点
+                int weight = edge.weight; // 边的权重
+                
+                // 如果邻接顶点不在最小生成树中，且当前边的权重小于已知的最小权重
+                if (!inMST[v] && weight < key[v]) {
+                    key[v] = weight;       // 更新最小权重
+                    parent[v] = u;         // 更新父节点
+                    pq.push({key[v], v});  // 将更新后的顶点加入优先队列
+                }
+            }
+        }
+        
+        // 打印最小生成树的边
+        cout << "最小生成树的边为：" << endl;
+        for (int i = 1; i < V; ++i) {
+            cout << parent[i] << " - " << i << " 权重: " << key[i] << endl;
+        }
+        
+        return totalWeight;
+    }
+};

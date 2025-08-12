@@ -1,0 +1,87 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <climits>
+using namespace std;
+
+// 边的结构体，表示从一个顶点到另一个顶点的边及其权重
+struct Edge {
+    int to;       // 目标顶点
+    int weight;   // 边的权重
+    
+    // 构造函数，初始化边的目标顶点和权重
+    Edge(int t, int w) : to(t), weight(w) {}
+};
+
+// 图的结构体，使用邻接表表示
+struct Graph {
+    int V;                  // 顶点数量
+    vector<vector<Edge>> adj;  // 邻接表，每个顶点对应一个边的列表
+    
+    // 构造函数，初始化图的顶点数量并分配邻接表空间
+    Graph(int vertices) : V(vertices), adj(vertices) {}
+    
+    // 向图中添加一条有向边
+    // 参数: from-起点, to-终点, weight-边的权重
+    void addEdge(int from, int to, int weight) {
+        adj[from].emplace_back(to, weight);
+    }
+    
+    // Dijkstra算法实现，求解从起点到所有其他顶点的最短路径
+    // 参数: start-起始顶点
+    // 返回: 存储从起点到各顶点最短距离的向量
+    vector<int> dijkstra(int start) {
+        // 存储从起点到每个顶点的最短距离，初始化为无穷大
+        vector<int> dist(V, INT_MAX);
+        
+        // 记录顶点是否已被处理
+        vector<bool> visited(V, false);
+        
+        // 优先队列(最小堆)，用于选择距离起点最近的未处理顶点
+        // 存储的是(距离, 顶点)对，优先队列会按距离从小到大排序
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        
+        // 起点到自身的距离为0
+        dist[start] = 0;
+        pq.push({0, start});
+        
+        // 处理所有顶点
+        while (!pq.empty()) {
+            // 取出距离起点最近的顶点
+            int u = pq.top().second;
+            pq.pop();
+            
+            // 如果该顶点已处理过，则跳过
+            if (visited[u]) continue;
+            
+            // 标记该顶点为已处理
+            visited[u] = true;
+            
+            // 遍历该顶点的所有邻接边
+            for (const Edge& edge : adj[u]) {
+                int v = edge.to;          // 邻接顶点
+                int weight = edge.weight; // 边的权重
+                
+                // 松弛操作：如果通过u到达v的距离比已知距离更短，则更新
+                if (dist[u] != INT_MAX && dist[v] > dist[u] + weight) {
+                    dist[v] = dist[u] + weight;
+                    pq.push({dist[v], v});
+                }
+            }
+        }
+        
+        return dist;
+    }
+    
+    // 打印从起点到所有其他顶点的最短路径距离
+    void printShortestPaths(int start, const vector<int>& dist) {
+        cout << "从顶点 " << start << " 到各顶点的最短路径距离：" << endl;
+        for (int i = 0; i < V; ++i) {
+            if (dist[i] == INT_MAX) {
+                cout << "到顶点 " << i << "：不可达" << endl;
+            } else {
+                cout << "到顶点 " << i << "：" << dist[i] << endl;
+            }
+        }
+    }
+};

@@ -11,3 +11,5 @@ setprecision() /*
                 */
 lower_bound(x) // 返回指向set中第一个不小于（≥）x的元素的迭代器。
 upper_bound(x) // 返回指向set中第一个大于（>）x的元素的迭代器。
+assert(~) // ~为假则终止执行
+fill(vec.begin(), vec.end(), 0); // 将vector所有元素重置为0

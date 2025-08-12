@@ -1,0 +1,127 @@
+struct Edge {
+    int u;        // 起点顶点
+    int v;        // 终点顶点
+    int weight;   // 边的权重
+    
+    // 构造函数，初始化边的起点、终点和权重
+    Edge(int u_, int v_, int weight_) : u(u_), v(v_), weight(weight_) {}
+};
+
+// 并查集(Union-Find)数据结构，用于检测图中的环
+struct UnionFind {
+    vector<int> parent;  // 记录每个元素的父节点
+    vector<int> rank;    // 记录每个集合的秩，用于优化合并操作
+    
+    // 构造函数，初始化并查集
+    UnionFind(int n) {
+        parent.resize(n);
+        rank.resize(n, 0);
+        // 初始时每个元素都是自己的父节点
+        for (int i = 0; i < n; ++i) {
+            parent[i] = i;
+        }
+    }
+    
+    // 查找操作：找到元素x所在集合的根节点
+    int find(int x) {
+        // 路径压缩优化：将x的父节点直接指向根节点
+        if (parent[x] != x) {
+            parent[x] = find(parent[x]);
+        }
+        return parent[x];
+    }
+    
+    // 合并操作：将元素x和y所在的集合合并
+    void unite(int x, int y) {
+        // 找到x和y的根节点
+        int x_root = find(x);
+        int y_root = find(y);
+        
+        // 如果已经在同一个集合中，则无需合并
+        if (x_root == y_root) return;
+        
+        // 按秩合并优化：将秩较小的集合合并到秩较大的集合中
+        if (rank[x_root] < rank[y_root]) {
+            parent[x_root] = y_root;
+        } else {
+            parent[y_root] = x_root;
+            // 如果秩相等，合并后秩加1
+            if (rank[x_root] == rank[y_root]) {
+                rank[x_root]++;
+            }
+        }
+    }
+    
+    // 判断元素x和y是否在同一个集合中
+    bool isConnected(int x, int y) {
+        return find(x) == find(y);
+    }
+};
+
+// 图的结构体，使用边的集合表示
+struct Graph {
+    int V;                  // 顶点数量
+    int E;                  // 边的数量
+    vector<Edge> edges;     // 边的集合
+    
+    // 构造函数，初始化图的顶点数量
+    Graph(int vertices) : V(vertices), E(0) {}
+    
+    // 向图中添加一条边
+    void addEdge(int u, int v, int weight) {
+        edges.emplace_back(u, v, weight);
+        E++;  // 边的数量加1
+    }
+    
+    // Kruskal算法实现，返回最小生成树的总权重
+    int kruskalMST() {
+        // 排序所有边，按权重从小到大排序
+        sort(edges.begin(), edges.end(), [](const Edge& a, const Edge& b) {
+            return a.weight < b.weight;
+        });
+        
+        // 初始化并查集
+        UnionFind uf(V);
+        
+        // 记录最小生成树的总权重
+        int totalWeight = 0;
+        
+        // 记录已加入最小生成树的边的数量
+        int edgeCount = 0;
+        
+        // 存储最小生成树的边
+        vector<Edge> mstEdges;
+        
+        // 遍历所有排序后的边
+        for (const Edge& edge : edges) {
+            // 如果已选择了V-1条边，说明最小生成树已完成
+            if (edgeCount == V - 1) break;
+            
+            // 检查当前边的两个顶点是否在不同的集合中
+            if (!uf.isConnected(edge.u, edge.v)) {
+                // 将这条边加入最小生成树
+                mstEdges.push_back(edge);
+                totalWeight += edge.weight;
+                edgeCount++;
+                
+                // 合并这两个顶点所在的集合
+                uf.unite(edge.u, edge.v);
+            }
+            // 如果两个顶点已在同一集合中，添加这条边会形成环，因此跳过
+        }
+        
+        // 检查是否能形成最小生成树（图是否连通）
+        if (edgeCount != V - 1) {
+            cout << "图不连通，无法形成最小生成树" << endl;
+            return -1;
+        }
+        
+        // 打印最小生成树的边
+        cout << "最小生成树的边为：" << endl;
+        for (const Edge& e : mstEdges) {
+            cout << e.u << " - " << e.v << " 权重: " << e.weight << endl;
+        }
+        
+        return totalWeight;
+    }
+};

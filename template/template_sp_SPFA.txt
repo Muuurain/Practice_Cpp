@@ -1,0 +1,168 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <climits>
+using namespace std;
+
+// 边的结构体，表示从一个顶点到另一个顶点的边及其权重
+struct Edge {
+    int to;       // 目标顶点
+    int weight;   // 边的权重（支持负数）
+    
+    // 构造函数，初始化边的目标顶点和权重
+    Edge(int t, int w) : to(t), weight(w) {}
+};
+
+// 图的结构体，使用邻接表表示（适合SPFA算法）
+struct Graph {
+private:
+    int V;                  // 顶点数量
+    vector<vector<Edge>> adj;  // 邻接表：adj[u]存储从u出发的所有边
+    vector<int> dist;       // 距离数组：dist[v]表示起点到v的最短距离
+    vector<int> inQueueCount; // 入队次数数组：记录每个顶点被加入队列的次数（用于检测负权回路）
+    vector<bool> inQueue;   // 标记数组：记录顶点是否当前在队列中
+    bool hasNegativeCycle;  // 标记图中是否存在负权回路
+
+public:
+    // 构造函数：初始化图的顶点数量
+    // 参数：vertices - 顶点数量
+    Graph(int vertices) : V(vertices), hasNegativeCycle(false) {
+        adj.resize(V);          // 初始化邻接表
+        dist.resize(V);         // 初始化距离数组
+        inQueueCount.resize(V, 0); // 初始化入队次数（默认为0）
+        inQueue.resize(V, false);  // 初始化入队标记（默认不在队列中）
+    }
+
+    // 向图中添加一条有向边
+    // 参数：from - 起点，to - 终点，weight - 边的权重（可正可负）
+    void addEdge(int from, int to, int weight) {
+        // 检查顶点索引合法性
+        if (from < 0 || from >= V || to < 0 || to >= V) {
+            cerr << "错误：顶点索引超出范围！" << endl;
+            return;
+        }
+        adj[from].emplace_back(to, weight);
+    }
+
+    // SPFA算法核心：求解从起点到所有其他顶点的最短路径
+    // 参数：start - 起始顶点
+    void spfa(int start) {
+        // 初始化距离数组：起点距离为0，其他为无穷大
+        for (int i = 0; i < V; ++i) {
+            dist[i] = INT_MAX;
+        }
+        dist[start] = 0;
+
+        // 初始化队列：起点入队
+        queue<int> q;
+        q.push(start);
+        inQueue[start] = true;
+        inQueueCount[start]++;
+
+        // 队列不为空时循环
+        while (!q.empty()) {
+            // 取出队首顶点u
+            int u = q.front();
+            q.pop();
+            inQueue[u] = false;  // 标记为不在队列中
+
+            // 遍历u的所有邻接边
+            for (const Edge& edge : adj[u]) {
+                int v = edge.to;          // 邻接顶点
+                int weight = edge.weight; // 边的权重
+
+                // 松弛操作：如果通过u到达v的距离更短，则更新
+                if (dist[u] != INT_MAX && dist[v] > dist[u] + weight) {
+                    dist[v] = dist[u] + weight;
+
+                    // 如果v不在队列中，则加入队列
+                    if (!inQueue[v]) {
+                        q.push(v);
+                        inQueue[v] = true;
+                        inQueueCount[v]++;
+
+                        // 检测负权回路：若顶点入队次数超过V，则存在负权回路
+                        // 原理：最短路径最多包含V-1条边，入队次数超过V说明有环
+                        if (inQueueCount[v] > V) {
+                            hasNegativeCycle = true;
+                            return; // 发现负权回路，提前退出
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // 打印从起点到所有其他顶点的最短路径距离
+    // 参数：start - 起始顶点
+    void printShortestPaths(int start) {
+        if (hasNegativeCycle) {
+            cout << "图中存在负权回路，无法计算最短路径！" << endl;
+            return;
+        }
+
+        cout << "从顶点 " << start << " 到各顶点的最短路径距离：" << endl;
+        for (int i = 0; i < V; ++i) {
+            if (i == start) continue; // 跳过起点到自身（距离为0）
+
+            if (dist[i] == INT_MAX) {
+                cout << "到顶点 " << i << "：不可达" << endl;
+            } else {
+                cout << "到顶点 " << i << "：" << dist[i] << endl;
+            }
+        }
+    }
+
+    // 获取从起点到顶点v的最短距离
+    // 返回：最短距离（INT_MAX表示不可达），若存在负权回路返回-1
+    int getShortestDistance(int v) {
+        if (hasNegativeCycle) {
+            cerr << "图中存在负权回路，无法获取最短路径！" << endl;
+            return -1;
+        }
+        if (v < 0 || v >= V) {
+            cerr << "错误：顶点索引超出范围！" << endl;
+            return -1;
+        }
+        return dist[v];
+    }
+
+    // 检查图中是否存在负权回路
+    bool hasNegativeCycleDetected() {
+        return hasNegativeCycle;
+    }
+};
+
+// 示例用法
+int main() {
+    // 示例1：含负权边但无负权回路的图
+    cout << "示例1：含负权边的图" << endl;
+    Graph g1(5); // 5个顶点（0-4）
+    g1.addEdge(0, 1, 6);
+    g1.addEdge(0, 2, 7);
+    g1.addEdge(1, 2, 8);
+    g1.addEdge(1, 3, -4);
+    g1.addEdge(1, 4, 5);
+    g1.addEdge(2, 3, 9);
+    g1.addEdge(2, 4, -3);
+    g1.addEdge(3, 1, 2);
+    g1.addEdge(3, 0, 2);
+    g1.addEdge(4, 3, 7);
+
+    g1.spfa(0); // 计算从顶点0出发的最短路径
+    g1.printShortestPaths(0);
+    cout << endl;
+
+    // 示例2：含负权回路的图（测试负权回路检测）
+    cout << "示例2：含负权回路的图" << endl;
+    Graph g2(3); // 3个顶点（0-2）
+    g2.addEdge(0, 1, 1);
+    g2.addEdge(1, 2, -1);
+    g2.addEdge(2, 0, -1); // 0->1->2->0形成负权回路（总权重1-1-1=-1）
+
+    g2.spfa(0);
+    g2.printShortestPaths(0); // 会提示存在负权回路
+
+    return 0;
+}
+    

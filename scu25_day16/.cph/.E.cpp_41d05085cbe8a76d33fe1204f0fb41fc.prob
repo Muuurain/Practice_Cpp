@@ -1,0 +1,1 @@
+{"name":"Local: E","url":"d:\\Code\\C++\\practice\\scu25_day16\\E.cpp","tests":[{"id":1755144778371,"input":"4\n10 1\n2 1 4 5 2 4 5 5 1 2\n5 2\n3 2 1 2 2\n2 2\n1 1\n2 2\n1 2","output":"4\n4\n2\n2"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Code\\C++\\practice\\scu25_day16\\E.cpp","group":"local","local":true}

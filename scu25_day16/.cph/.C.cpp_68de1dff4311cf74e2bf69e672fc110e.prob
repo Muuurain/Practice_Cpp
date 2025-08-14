@@ -1,0 +1,1 @@
+{"name":"Local: C","url":"d:\\Code\\C++\\practice\\scu25_day16\\C.cpp","tests":[{"id":1755142830014,"input":"7 10","output":"B"},{"id":1755142838300,"input":"26 80","output":"A"},{"id":1755142843887,"input":"15 689","output":"G"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Code\\C++\\practice\\scu25_day16\\C.cpp","group":"local","local":true}

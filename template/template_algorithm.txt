@@ -28,5 +28,5 @@ priority_queue<元素类型, 底层容器类型, 比较函数类型> /* e.g.
                                                     vec 是一个已存在的 vector<int> 容器
                                                     (vec.begin(), vec.end()) 是优先队列的构造函数参数，作用是初始化队列中的元素。
                                                     */
-
+vector<vector<int>> vec(N, vector<int>(N)) // 创建二维数组大小为[N][N]
 

@@ -1,5 +1,9 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int N = 5e3 + 10;
 const int M = 2e3 + 10;
-typedef struct bigint{
+struct bigint{
     vector<int> num;
     bigint(int inum = 0) : num(M) {
         string s = to_string(inum);
@@ -37,7 +41,7 @@ typedef struct bigint{
         }
         return bigmulti;
     }
-}bi;
+};
 istream& operator>>(istream& a, bigint& b) {
     string s;
     a >> s;
@@ -54,4 +58,22 @@ ostream& operator<<(ostream& a, const bigint& b) {
     }
 
     return a;
+}
+
+vector<bigint> ans(N);
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    
+    int n;
+    cin >> n;
+    ans[1] = ans[0] = (bigint)1;
+    for(int i = 2; i <= n; i++) {
+        ans[i] = ans[i - 1] + ans[i - 2];
+    }
+    cout << ans[n] << endl;
+
+    return 0;
 }

@@ -29,4 +29,4 @@ priority_queue<元素类型, 底层容器类型, 比较函数类型> /* e.g.
                                                     (vec.begin(), vec.end()) 是优先队列的构造函数参数，作用是初始化队列中的元素。
                                                     */
 vector<vector<int>> vec(N, vector<int>(N)) // 创建二维数组大小为[N][N]
-
+reserve(n) // 预先为哈希表(unordered_map)分配足够的桶数量，确保容器至少能容纳 n 个元素而不需要触发「重哈希（rehash）」。

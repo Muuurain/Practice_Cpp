@@ -1,3 +1,8 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int N = 1e3 + 10;
+typedef long long ll;
 const int M = 2e3 + 10;
 typedef struct bigint{
     vector<int> num;
@@ -23,22 +28,6 @@ typedef struct bigint{
         return bigsum;
     }
 
-    bigint operator-(const bitint& x) const {
-        bigint bigminus;
-        int borrow = 0;
-        for(int i = 0; i < M; i++) {
-            int diff = this->num[i] - x.num[i] - borrow;
-            if(diff < 0) {
-                diff += 10;
-                borrow = 1;
-            } else {
-                borrow = 0;
-            }
-            bigminus.num[i] = diff;
-        }
-        return bigminus;
-    }
-
     bigint operator*(const bigint& x) const {
         bigint bigmulti;
         int carry = 0;
@@ -52,25 +41,6 @@ typedef struct bigint{
             }
         }
         return bigmulti;
-    }
-    bool operator<(const bigint& x) const {
-        int pos1 = M - 1, pos2 = M - 1;
-        while(!this->num[pos1] && pos1) pos1--;
-        while(!x.num[pos2] && pos2) pos2--;
-        if(pos1 != pos2) return pos1 < pos2;
-        int pos = pos1;
-        while(this->num[pos] == x.num[pos] && pos) pos--;
-        return this->num[pos] < x.num[pos];
-    }
-    
-    bool operator>(const bigint& x) const {
-        int pos1 = M - 1, pos2 = M - 1;
-        while(!this->num[pos1] && pos1) pos1--;
-        while(!x.num[pos2] && pos2) pos2--;
-        if(pos1 != pos2) return pos1 > pos2;
-        int pos = pos1;
-        while(this->num[pos] == x.num[pos] && pos) pos--;
-        return this->num[pos] > x.num[pos];
     }
 }bi;
 istream& operator>>(istream& a, bigint& b) {
@@ -89,4 +59,20 @@ ostream& operator<<(ostream& a, const bigint& b) {
     }
 
     return a;
+}
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+
+    ll m, n;
+    cin >> m >> n;
+    vector<bi> ans(N);
+    ans[1] = ans[2] = 1;
+    for(int i = 3; i <= n; i++) {
+        ans[i] = ans[i - 1] + ans[i - 2];
+    }
+    cout << ans[n - m + 1] << endl;
+
+    return 0;
 }

@@ -15,7 +15,7 @@ assert(~) // ~为假则终止执行
 fill(vec.begin(), vec.end(), 0); // 将vector所有元素重置为0
 __int128 //有符号 128 位整数，范围为 -2^127 到 2^127 - 1（约 -1.7×10^38 到 1.7×10^38）。
 unsigned __int128 //无符号 128 位整数，范围为 0 到 2^128 - 1（约 3.4×10^38）。
-ceil() // 
+ceil() // 浮点数向上取整,且返回值为double
 for (auto& pair : umap) {  // 用引用避免拷贝，效率更高
     cout << "键：" << pair.first << "，值：" << pair.second << endl;
     // pair.second = 100;  // 可修改值

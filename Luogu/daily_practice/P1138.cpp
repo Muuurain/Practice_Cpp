@@ -14,9 +14,14 @@ int main() {
         cin >> i;
         num.insert(i);
     }
-    auto it = num.begin();
-    advance(it, k - 1);
-    cout << *it << '\n';
+    if(k > num.size()) {
+        cout << "NO RESULT" << endl;
+    }
+    else {
+        auto it = num.begin();
+        advance(it, k - 1);
+        cout << *it << '\n';
+    }
     
     return 0;
 }

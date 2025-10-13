@@ -1,57 +1,50 @@
-/*
-
 #include <bits/stdc++.h>
 using namespace std;
 
 typedef long long ll;
+ll cal(char c, int cnt, int st, vector<char> &s) {
+    int ct = 1;
+    ll ret = 0;
+    for(int i = st + 1; i < s.size(); i++) {
+        if(s[i] == c) {
+            ret += i - (st + ct);
+            ct++;
+        }
+    }
+    return ret;
+}
 void solve() {
     int n;
-    vector<char> ch(n);
-    int na = 0, nb = 0;
-    for(char& c : ch) {
-        cin >> c;
-        if(c == 'a') na++;
-        else nb++;
-    }
-    int maxa = 0, maxb = 0;
-    for(int i = 0; i < na; i++) {
-        if(ch[i] == 'a') maxa++;
-    }
-    for(int i = 0; i < nb; i++) {
-        if(ch[i] == 'b') maxb++;
-    }
-    int ta = maxa, tb = maxb;
-    int sta = 0, stb = 0;
-    for(int i = 1; i + na - 1 < n; i++) {
-        if(ch[i - 1] == 'a') ta--;
-        if(ch[i + na - 1] == 'a') ta++;
-        if(ta > maxa) {
-            maxa = ta;
-            sta = i;
-        }
-    }
-    for(int i = 1; i + nb - 1 < n; i++) {
-        if(ch[i - 1] == 'b') tb--;
-        if(ch[i + nb - 1] == 'b') tb++;
-        if(tb > maxb) {
-            maxb = tb;
-            stb = i;
-        }
+    cin >> n;
+    vector<char> s(n);
+    vector<int> pa, pb;
+    for(int i = 0; i < n; i++) {
+        cin >> s[i];
+        if(s[i] == 'a') pa.push_back(i);
+        else pb.push_back(i);
     }
     ll reta = 0, retb = 0;
-    ll outa = 0, outb = 0;
-    for(int i = 0; i < sta; i++) {
-        if(ch[i] == 'a') outa += i;
+    if(!pa.empty()) {
+        for(int i = 0; i < pa.size(); i++) pa[i] -= i;
+        int La = pa[pa.size() / 2];
+        for(auto &i : pa) reta += abs(La - i);
     }
-    for(int i = sta + na; i < n; i++) {
-        if(ch[i] == 'a') outa += i;
+    else {
+        for(int i = 0; i < pb.size(); i++) pb[i] -= i;
+        int Lb = pb[pb.size() / 2];
+        for(auto &i : pb) retb += abs(Lb - i);    
+        cout << retb << '\n';
+        return;
     }
-    for(int i = 0; i < stb; i++) {
-        if(ch[i] == 'b') outb += i;
+    if(!pb.empty()) {
+        for(int i = 0; i < pb.size(); i++) pb[i] -= i;
+        int Lb = pb[pb.size() / 2];
+        ll retb = 0;
+        for(auto &i : pb) retb += abs(Lb - i);
+        ll ret = min(reta, retb);
+        cout << ret << '\n';   
     }
-    for(int i = stb + nb; i < n; i++) {
-        if(ch[i] == 'b') outb += i;
-    }
+    else cout << reta << '\n';
 }
 int main() {
     ios::sync_with_stdio(false);

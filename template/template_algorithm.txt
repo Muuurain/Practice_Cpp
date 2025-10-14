@@ -32,4 +32,9 @@ vector<vector<int>> vec(N, vector<int>(N)) // 创建二维数组大小为[N][N]
 reserve(n) // 预先为哈希表(unordered_map)分配足够的桶数量，确保容器至少能容纳 n 个元素而不需要触发「重哈希（rehash）」。
 reverse(vec.begin(), vec.end()) // 反转vector元素的位置
 advance(it, n) // 将迭代器it向后移动n（n可以为负），set容器不能通过[]访问元素，需要通过该函数使用迭代器访问。
-unique(v.begin(), v.end()) // 移除容器中相邻的重复元素（不改变数组大小，仅将重复元素移动到数组末尾）
+unique(v.begin(), v.end()) // 移除容器中相邻的重复元素（不改变数组大小，仅将重复元素移动到数组末尾），同时返回第一个重复元素现在的迭代器
+    unic.resize(unique(unic.begin(),unic.end())-unic.begin()); 对vector变量unic进行去重（仅可去重相邻元素，一般搭配sort使用）
+lower_bound(unic.begin(), unic.end(), a[i]) 在已排序的容器 unic 中，查找第一个大于或等于 a[i] 的元素的迭代器。
+upper_bound(unic.begin(), unic.end(), a[i]) 在已排序的容器 unic 中，查找第一个大于 a[i] 的元素的迭代器
+unic.reserve(N); 提前为 vector容器类型变量 unic 分配至少能存储 N 个元素的内存空间，避免在后续向 unic 中添加元素频繁触发内存重新分配，从而提高程序效率。
+

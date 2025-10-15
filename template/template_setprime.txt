@@ -1,13 +1,14 @@
+const int N = 1e5 + 10;
 vector<int> pri;
-bool not_prime[n];
+bool not_prime[N];
 
-void pre(int n) {
-  for (int i = 2; i <= n; ++i) {
+void pre(int N) {
+  for (int i = 2; i <= N; ++i) {
     if (!not_prime[i]) {
       pri.push_back(i);
     }
     for (int pri_j : pri) {
-      if (i > n / pri_j) break;
+      if (i > N / pri_j) break;
       not_prime[i * pri_j] = true;
       if (i % pri_j == 0) {
         break;

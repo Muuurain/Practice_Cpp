@@ -8,6 +8,8 @@ setprecision() /*
                 double num = 3.1415926535;
                 // 输出小数点后2位（四舍五入）
                 cout << fixed << setprecision(2) << num << endl;  // 输出：3.14
+                不加  fixed  时， setprecision(n)  控制的是总有效数字位数（包括整数部分和小数部分）。
+                加  fixed  后， setprecision(n)  控制的是小数点后的位数（即小数部分的位数）。
                 */
 lower_bound(x) // 返回指向set中第一个不小于（≥）x的元素的迭代器。
 upper_bound(x) // 返回指向set中第一个大于（>）x的元素的迭代器。

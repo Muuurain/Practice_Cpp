@@ -6,63 +6,52 @@ void solve() {
     int n, k, l, r;
     cin >> n >> k >> l >> r;
     vector<int> a(n);
-    for(auto& i : a) cin >> i;
-    ll ret = 0;
-    unordered_map<int, int> uni;
-    for(int i = 0; i <= l - 1 && i < n; i++) {
-        if(uni.find(a[i]) == uni.end()) uni[a[i]] = 1;
-        else uni[a[i]]++;
+    vector<int> hs;
+
+    for(int i = 0; i < n; i++) {
+        cin >> a[i];
+        hs.push_back(a[i]);
     }
-    int cnt = uni.size();
-    for(int pl = 0; pl + l - 1 < n; pl++) {
-        int cntnow = cnt;
-        if(cntnow == k) {
-            ret++;
+
+    sort(hs.begin(), hs.end());
+    hs.erase(unique(hs.begin(), hs.end() ), hs.end() );
+    for(int i = 0; i < n; i++) {
+        a[i] = lower_bound(hs.begin(), hs.end(), a[i]) - hs.begin();
+    }
+
+    int px = 0, py = 0;
+    int cntx = 0, cnty = 0;
+    ll ret = 0;
+    vector<int> extx(n), exty(n);
+    for(int i = 0; i < n; i++) {
+        while(cntx < k && px < n) {
+            extx[a[px]]++;
+            if(extx[a[px]] == 1) cntx++;
+            px++;
         }
-        int mr = min(pl + r - 1, n - 1);
-        for(int pr = pl + l; pr < pl + r && pr < n; pr++) {
-            if(uni.find(a[pr]) == uni.end()) {
-                uni[a[pr]] = 1;
-                cntnow++;
-                if(cntnow == k) {
-                    ret++;
-                }
-                else if(cntnow > k) {
-                    mr = pr;
-                    break;
-                }
+        
+        while(cnty <= k && py < n) {
+            if(exty[a[py]] == 0) {
+                if(cnty == k) break;
+                cnty++;
+                exty[a[py]]++;
             }
             else {
-                uni[a[pr]]++;
-                if(cntnow == k) {
-                    ret++;
-                }
+                exty[a[py]]++;
             }
+            py++;
         }
-        for(int pr = pl + l; pr < pl + r && pr < n && pr <= mr; pr++) {
-            uni[a[pr]]--;
-            if(uni[a[pr]] == 0) {
-                uni.erase(a[pr]);
-            }
+
+        if(cntx == k) {
+            ret += max(0, min(py - 1, i + r - 1) - max(px - 1, i + l - 1) + 1);
         }
-        if(uni[a[pl]] == 1) {
-            uni.erase(a[pl]);
-            cnt--;
-        }
-        else{
-            uni[a[pl]]--;
-        }
-        if(pl + l == n) {
-            break;
-        }
-        else if(uni.find(a[pl + l]) == uni.end()) {
-            cnt++;
-            uni[a[pl + l]] = 1;
-        }
-        else {
-            uni[a[pl + l]]++;
-        }
+
+        extx[a[i]]--;
+        exty[a[i]]--;
+        if(extx[a[i]] == 0) cntx--;
+        if(exty[a[i]] == 0) cnty--;
     }
+
     cout << ret << '\n';
 }
 

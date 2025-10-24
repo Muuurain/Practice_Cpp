@@ -43,5 +43,5 @@ unique(v.begin(), v.end()) // 移除容器中相邻的重复元素（不改变�
 lower_bound(unic.begin(), unic.end(), a[i]) 在已排序的容器 unic 中，查找第一个大于或等于 a[i] 的元素的迭代器。
 upper_bound(unic.begin(), unic.end(), a[i]) 在已排序的容器 unic 中，查找第一个大于 a[i] 的元素的迭代器。
 unic.reserve(N); 提前为 vector容器类型变量 unic 分配至少能存储 N 个元素的内存空间，避免在后续向 unic 中添加元素频繁触发内存重新分配，从而提高程序效率。
-
+mt19937 rng(chrono::steady_clock::now().time_since_epoch().count()); 随机数生成器，后续生成随机数时，直接调用 rng() 即可。
 

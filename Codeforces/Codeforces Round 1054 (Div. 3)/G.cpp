@@ -7,6 +7,7 @@ void solve() {
     int n, q;
     cin >> n >> q;
     vector<int> a(n);
+
     vector<int> uniq;
     for(int i = 0; i < n; i++) {
         cin >> a[i];
@@ -17,6 +18,7 @@ void solve() {
     for(int i = 0; i < n; i++) {
         a[i] = lower_bound(uniq.begin(), uniq.end(), a[i]) - uniq.begin();
     }
+    
     vector<vector<int> > pos(n);
     for(int i = 0; i < n; i++) {
         pos[a[i]].push_back(i);

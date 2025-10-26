@@ -1,11 +1,14 @@
 vector<int> num(n);
-vector<int> uniq;
-for(int i = 0; i < n; i++) {
-    cin >> num[i];
-    uniq.push_back(num[i]);
+vector<int> uniq(n);
+for (int i = 0; i < n; ++i) {
+    cin >> uniq[i];
 }
+num = uniq;
+
 sort(uniq.begin(), uniq.end());
 uniq.erase(unique(uniq.begin(), uniq.end()), uniq.end());
-for(int i = 0; i < n; i++) {
-    num[i] = lower_bound(uniq.begin(), uniq.end(), num[i]) - uniq.begin();
+uniq.shrink_to_fit();
+
+for(auto& x : num) {
+    x = lower_bound(uniq.begin(), uniq.end(), x) - uniq.begin();
 }

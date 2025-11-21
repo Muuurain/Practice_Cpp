@@ -1,3 +1,5 @@
+适合稀疏图
+
 struct Edge {
     int u;        // 起点顶点
     int v;        // 终点顶点

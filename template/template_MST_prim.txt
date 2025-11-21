@@ -1,3 +1,5 @@
+// 适合稠密图
+
 struct Edge {
     int to;       // 目标顶点
     int weight;   // 边的权重

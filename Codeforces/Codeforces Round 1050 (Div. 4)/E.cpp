@@ -24,14 +24,8 @@ void solve() {
         occ[x]++;
     }
 
-    if(uniq.size() % k) {
-        cout << 0 << '\n';
-        return;
-    }
-
-    int count = n / uniq.size();
     for(auto i : occ) {
-        if(i != count) {
+        if(i % k) {
             cout << 0 << '\n';
             return;
         }
@@ -40,16 +34,22 @@ void solve() {
     ll ret = 0;
 
     int p1 = 0, p2 = 0;
+    vector<int> nowset(uniq.size());
     vector<int> aimset(uniq.size());
+
+    for(int i = 0; i < aimset.size(); i++) {
+        aimset[i] = occ[i] / k;
+    }
+
     int isvalue = true;
     while(p1 < n) {
-        while (p2 < n && aimset[num[p2]] < count) {
-            aimset[num[p2]]++;
+        while (p2 < n && nowset[num[p2]] < aimset[num[p2]]) {
+            nowset[num[p2]]++;
             ret++;
             p2++;
         }
         ret += p2 - p1 - 1;
-        aimset[num[p1]]--;
+        nowset[num[p1]]--;
         p1++;
     }
     cout << ret << '\n';

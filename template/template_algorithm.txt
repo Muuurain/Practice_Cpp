@@ -29,6 +29,7 @@ priority_queue<元素类型, 底层容器类型, 比较函数类型> /* e.g.
                                                     如果是greater<>, 则队首元素是整个队列中最小的元素
                                                     vec 是一个已存在的 vector<int> 容器
                                                     (vec.begin(), vec.end()) 是优先队列的构造函数参数，作用是初始化队列中的元素。
+                                       
                                                     */
 vector<vector<int>> vec(N, vector<int>(N)) // 创建二维数组大小为[N][N]
 reserve(n) // 预先为哈希表(unordered_map)分配足够的桶数量，确保容器至少能容纳 n 个元素而不需要触发「重哈希（rehash）」。
@@ -40,8 +41,12 @@ unique(v.begin(), v.end()) // 移除容器中相邻的重复元素（不改变�
         unique(unique_elements.begin(), unique_elements.end()),
         unique_elements.end()
     ); // 与上式功能一致
-lower_bound(unic.begin(), unic.end(), a[i]) 在已排序的容器 unic 中，查找第一个大于或等于 a[i] 的元素的迭代器。
-upper_bound(unic.begin(), unic.end(), a[i]) 在已排序的容器 unic 中，查找第一个大于 a[i] 的元素的迭代器。
-unic.reserve(N); 提前为 vector容器类型变量 unic 分配至少能存储 N 个元素的内存空间，避免在后续向 unic 中添加元素频繁触发内存重新分配，从而提高程序效率。
-mt19937 rng(chrono::steady_clock::now().time_since_epoch().count()); 随机数生成器，后续生成随机数时，直接调用 rng() 即可。
-max_element(vec.begin(), vec.end()) 用于查找指定范围内的最大元素，并返回指向该最大元素的迭代器。
+lower_bound(unic.begin(), unic.end(), a[i]) // 在已排序的容器 unic 中，查找第一个大于或等于 a[i] 的元素的迭代器。
+upper_bound(unic.begin(), unic.end(), a[i]) // 在已排序的容器 unic 中，查找第一个大于 a[i] 的元素的迭代器。
+unic.reserve(N); // 提前为 vector容器类型变量 unic 分配至少能存储 N 个元素的内存空间，避免在后续向 unic 中添加元素频繁触发内存重新分配，从而提高程序效率。
+mt19937 rng(chrono::steady_clock::now().time_since_epoch().count()); // 随机数生成器，后续生成随机数时，直接调用 rng() 即可。
+max_element(vec.begin(), vec.end()) // 用于查找指定范围内的最大元素，并返回指向该最大元素的迭代器。
+double sin(double x)	// 计算 x 的正弦值（sin可替换为cos， tan）
+double asin(double x)	// 计算 x 的反正弦值， 返回弧度范围 [-π/2, π/2]（asin可替换为acos， atan）
+std::numbers::pi // C++20以上支持的pi值
+

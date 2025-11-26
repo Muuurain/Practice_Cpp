@@ -1,0 +1,59 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+typedef long long ll;
+
+ll mypow(ll a, ll b, ll p) {
+    ll ans = 1;
+    a %= p;
+    while(b) {
+        if(b & 1) ans = ans * a % p;
+        a = a * a % p;
+        b >>= 1;
+    }
+    return ans;
+}
+
+string convertbase(ll n, string s, ll m) {
+    ll cnt = 0;
+    ll decimal = 0;
+    for(ll i = s.length() - 1; i >= 0; i--) {
+        char c = s[i];
+        if(c >= 'A' && c <= 'Z') {
+            decimal += (c - 'A' + 10) * mypow(n, cnt, LLONG_MAX);
+        }
+        else {
+            decimal += (c - '0') * mypow(n, cnt, LLONG_MAX);
+        }
+        cnt++;
+    }
+    ll temp = decimal % m;
+    string ans = "";
+    if(decimal == 0) ans = "0";
+    while(decimal) {
+        if(temp > 9) {
+            ans = (char)(temp - 10 + 'A') + ans;
+        }
+        else {
+            ans = (char)(temp + '0') + ans;
+        }
+        decimal /= m;
+        temp = decimal % m;
+    }
+    return ans;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+
+    int k, q;
+    string x;
+    cin >> k >> x >> q;
+
+    string ans = convertbase(k, x, q);
+    cout << ans;
+
+    return 0;
+}

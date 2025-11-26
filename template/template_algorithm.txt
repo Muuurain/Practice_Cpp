@@ -49,4 +49,3 @@ max_element(vec.begin(), vec.end()) // 用于查找指定范围内的最大元�
 double sin(double x)	// 计算 x 的正弦值（sin可替换为cos， tan）
 double asin(double x)	// 计算 x 的反正弦值， 返回弧度范围 [-π/2, π/2]（asin可替换为acos， atan）
 std::numbers::pi // C++20以上支持的pi值
-

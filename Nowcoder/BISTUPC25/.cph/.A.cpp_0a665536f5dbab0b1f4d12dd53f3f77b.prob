@@ -1,0 +1,1 @@
+{"name":"Local: A","url":"d:\\Code\\C++\\practice\\Nowcoder\\BISTUPC\\A.cpp","tests":[{"id":1764134177763,"input":"2\n4\n1 3 4 5\n4\n1000000000 1000000000 1000000000 1000000000","output":"12\n3000000000"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Code\\C++\\practice\\Nowcoder\\BISTUPC\\A.cpp","group":"local","local":true}

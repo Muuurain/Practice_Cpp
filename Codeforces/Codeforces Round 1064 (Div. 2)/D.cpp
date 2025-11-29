@@ -2,58 +2,29 @@
 using namespace std;
 
 typedef long long ll;
-ll mod = 998244353;
+const int MOD = 998244353;
 void solve() {
-    ll n;
+    int n;
     cin >> n;
-
-    vector<ll> num(n);
-    vector<ll> uniq(n);
-    for (int i = 0; i < n; ++i) {
-        cin >> uniq[i];
+    vector<ll> num(n), cnt(n + 5);
+    ll maxcnt = 0;
+    for(auto& i : num) {
+        cin >> i;
+        maxcnt = max(maxcnt, ++cnt[i]);
     }
-    num = uniq;
-
-    sort(uniq.begin(), uniq.end());
-    uniq.erase(unique(uniq.begin(), uniq.end()), uniq.end());
-    uniq.shrink_to_fit();
-    vector<ll> freq(uniq.size());
-
-    for(auto& x : num) {
-        x = lower_bound(uniq.begin(), uniq.end(), x) - uniq.begin();
-        freq[x]++;
-    }
-    ll maxf = 0;
-    ll maxfi = 0;
-    for(int i = 0; i < freq.size(); i++) {
-        if(freq[i] > maxf) {
-            maxf = freq[i];
-            maxfi = i;
+    ll ans = 0;
+    vector<ll> dp(n + 5);
+    dp[0] = 1;
+    for(int i = 1; i <= n; i++) {
+        if(cnt[i]) {
+            for(int j = n; j >= cnt[i]; j--) {
+                (dp[j] += dp[j - cnt[i]] * cnt[i]) %= MOD;
+            }
         }
     }
-
-    ll ans = 1;
-    if(maxf > n / 2) {
-        for(int i = 0; i < freq.size(); i++) {
-            if(i == maxfi) ans *= freq[i];
-            else ans *= freq[i] + 1;
-            ans %= mod;
-        }
+    for(int i = maxcnt; i <= n; i++) {
+        (ans += dp[i]) %= MOD;
     }
-
-    else {
-        for(int i = 0; i < freq.size(); i++) {
-            ans *= freq[i] + 1;
-            ans %= mod;
-        }
-        if(ans == 0) ans = mod - 1;
-        else ans -= 1;
-    }
-
-    
-
-    if(freq.size() == 1) ans = freq[0];
-
     cout << ans << '\n';
 }
 int main() {

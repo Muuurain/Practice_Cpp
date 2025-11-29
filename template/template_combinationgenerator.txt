@@ -1,3 +1,5 @@
+// template_combinationgenerator
+
 // 组合数生成器结构体，基于杨辉三角实现
 struct CombinationGenerator {
     // 存储阶乘：fact[i] = i! % MOD

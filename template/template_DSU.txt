@@ -1,3 +1,5 @@
+// template_DSU
+
 // 并查集(Disjoint Set Union, DSU)数据结构
 // 也称为Union-Find数据结构，用于高效处理集合的合并与查询操作
 struct DSU {

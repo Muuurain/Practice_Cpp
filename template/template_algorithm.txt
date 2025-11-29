@@ -1,3 +1,5 @@
+// template_algorithm
+
 __builtin_popcountll(t) // 统计t在二进制下1的数量
 stoi(t) // 将字符串t转化为int
 to_string(t) // 将整数t转化为字符串

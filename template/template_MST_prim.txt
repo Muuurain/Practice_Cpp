@@ -1,3 +1,5 @@
+// template_MST_prim
+
 // 适合稠密图
 
 struct Edge {

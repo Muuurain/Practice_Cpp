@@ -3,25 +3,40 @@ using namespace std;
 
 typedef long long ll;
 void solve() {
-    ll n, q;
+    int n, q;
     cin >> n >> q;
-    vector<ll> a(n);
-    ll maxa = 0;
-    for(auto& i : a) {
-        cin >> i;
-        maxa = max(i, maxa);
-    }
-    sort(a.begin(), a.end());
+    vector<int> num(n);
+    for(auto& i : num) cin >> i;
+    sort(num.begin(), num.end(), [&](int& a, int&b) {
+        return a > b;
+    });
+    int nn = min(n, 30);
     while(q--) {
-        ll c;
+        int c;
         cin >> c;
-        ll ans;
-        if(maxa >= c) ans = 0;
-        else{
-
+        vector<int> b(nn); 
+        ll ans = 0;
+        for(int i = 0; i < nn; i++) {
+            b[i] = num[i];
         }
+        for(int i = 29; ~i; i--) {
+            int cc = 0;
+            for(auto j : b) cc += (j >> i) & 1;
+            int cret = (c >> i) & 1;
+            if(cc > cret) break;
+            if(cc == cret) for(auto& j : b) j &= ~(1 << i);
+            else {
+                int index = 0;
+                for(int i = 1; i < nn; i++) {
+                    if(b[i] > b[index]) index = i;
+                }
+                ans += (1 << i) - b[index];
+                b[index] = 0;
+            }
+        }
+        cout << ans << '\n';
     }
-} 
+}
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);

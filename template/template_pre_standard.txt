@@ -4,6 +4,8 @@
 using namespace std;
 
 typedef long long ll;
+#define debug(x) (cout << "debug(" << #x << "): " << x << '\n')
+
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);

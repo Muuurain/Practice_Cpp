@@ -14,7 +14,7 @@ setprecision() /*
                 加  fixed  后， setprecision(n)  控制的是小数点后的位数（即小数部分的位数）。
                 */
 lower_bound(x) // 返回指向set中第一个不小于（≥）x的元素的迭代器。
-upper_bound(x) // 返回指向set中第一个大于（>）x的元素的迭代器。
+upper_bound(x) // 返回指向set中第一个大于（>）x的元素的迭代器。如果没有找到满足条件的元素，会返回第二个参数的迭代器。
 assert(~) // ~为假则终止执行
 fill(vec.begin(), vec.end(), 0); // 将vector所有元素重置为0
 __int128 //有符号 128 位整数，范围为 -2^127 到 2^127 - 1（约 -1.7×10^38 到 1.7×10^38）。

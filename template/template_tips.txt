@@ -7,3 +7,4 @@
 对于排序后的vector容器，使用lower_bound(.begin(), .end(), val) 比使用find(.begin(), .end(), val)查找效率更高，因为前者是二分查找，后者是线性查找。
 循环变量的上限尽量使用.size()函数而避免使用具体的数值.
 对于for循环，若条件为i >= 0， 则可表示为~i
+vec.size() 返回的是 std::size_t 类型（无符号整数，通常是 64 位）

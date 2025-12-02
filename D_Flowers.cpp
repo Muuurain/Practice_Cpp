@@ -33,7 +33,7 @@ int main() {
     while(t--) {
         ll a, b;
         cin >> a >> b;
-        cout << pre[b] - pre[a - 1] << '\n';
+        cout << (ll)(MOD + pre[b] - pre[a - 1]) % MOD << '\n';
     }
 
     return 0;

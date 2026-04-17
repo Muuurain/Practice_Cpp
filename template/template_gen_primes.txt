@@ -1,0 +1,27 @@
+// template_gen_primes
+
+vector<int> pri;
+vector<bool> not_prime;
+void pre(int cnt)
+{
+    pri.clear();
+    not_prime.clear();
+    for (long long i = 2; pri.size() < cnt; ++i)
+    {
+        if (i >= not_prime.size())
+            not_prime.resize(i + 1);
+        if (!not_prime[i])
+            pri.push_back(i);
+        for (int p : pri)
+        {
+            if (i > 1e9 / p)
+                break;
+            long long num = i * p;
+            if (num >= not_prime.size())
+                not_prime.resize(num + 1);
+            not_prime[num] = 1;
+            if (i % p == 0)
+                break;
+        }
+    }
+}

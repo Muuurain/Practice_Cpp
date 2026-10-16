@@ -1,1 +1,0 @@
-{"name":"Local: B","url":"d:\\Code\\C++\\practice\\CCF\\2024_12 csp\\B.cpp","tests":[{"id":1764915095768,"input":"3\n5 5 5 5\n0 100 0\n","output":"10 20 10\n"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Code\\C++\\practice\\CCF\\2024_12 csp\\B.cpp","group":"local","local":true}

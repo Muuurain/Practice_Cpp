@@ -27,29 +27,31 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
-    int n, k;
-    cin >> n >> k;
-    while(k--) {
-        int x, y;
-        cin >> x >> y;
-        string s;
-        cin >> s;
-        for(auto c : s) {
-            if(c == 'f') {
-                if(y < n) y++;
-            }
-            else if(c == 'b') {
-                if(y > 1) y--;
-            }
-            else if(c == 'l') {
-                if(x > 1) x--;
-            }
-            else {
-                if(x < n) x++;
-            }
-        }
-        cout << x << " " << y << '\n';
+
+    int n;
+    cin >> n;
+    vector<ll> rec(n + 10);
+    for(int i = 0; i < n; i++) {
+        cin >> rec[i];
     }
+    //rec.push_back(0); rec(n + 10)已经包含末尾的哨兵'0';
+    stack<int> s;
+    ll ans = 0;
+    for(int i = 0; i <= n; i++) {
+        while(!s.empty() && rec[s.top()] > rec[i]) {
+            int aim = s.top();
+            s.pop();
+            int right = i;
+            int left = s.empty() ? -1 : s.top();
+            ll width = right - left - 1;
+            ll height = rec[aim];
+            ans = max(ans, height * width);
+        }
+
+        s.push(i);
+    }
+
+    cout << ans << '\n';
 
     return 0;
 }

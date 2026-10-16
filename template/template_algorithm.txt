@@ -55,4 +55,9 @@ vec.resize(n, value) //截断容器大小至n，或扩容容器至n且保持原�
 vec.assign(n, value) //清空原有元素，替换为n个value元素
 vec.assign(vec.begin(), vec.begin() + n) //替换为迭代器范围内的n个元素
 vec.assign({a, b, c}) // 替换为初始化列表中的元素
-
+auto it = next(vec.begin(), n) // 接收一个迭代器，返回向后移动 n 步后的新迭代器(n默认为1，即可表示为auto it = next(vec.begin()))
+auto it = prev(vec.begin (), n) // 接收一个双向迭代器，返回向前移动 n 步后的新迭代器 (n 默认为 1，即可表示为 auto it = prev (vec.begin ()))
+list.splice(pos_iterator, other_list) // 插入整个链表 other 到 pos 位置
+list.splice(pos_iterator, other_list, first_iterator, last_iterator) // 插入other链表的区间[first, last)到 pos 位置
+list.splice(pos_iterator, other_list, it) // 插入other链表中it指示的单个元素到pos位置
+当splice操作的源链表和目标链表是同一个链表时，目标位置 pos 不能是源区间 [first, last) 内的迭代器

@@ -60,4 +60,7 @@ auto it = prev(vec.begin (), n) // 接收一个双向迭代器，返回向前移
 list.splice(pos_iterator, other_list) // 插入整个链表 other 到 pos 位置
 list.splice(pos_iterator, other_list, first_iterator, last_iterator) // 插入other链表的区间[first, last)到 pos 位置
 list.splice(pos_iterator, other_list, it) // 插入other链表中it指示的单个元素到pos位置
-当splice操作的源链表和目标链表是同一个链表时，目标位置 pos 不能是源区间 [first, last) 内的迭代器
+freopen("data.in", "r", stdin); // 将标准输入重定向到 data.in 文件（只读模式 "r"）
+freopen("data.out", "w", stdout); // 将标准输出重定向到 data.out 文件（只写模式 "w"） PS:文件名位置可以改为绝对路径如freopen("D:/my_code/data.in", "r", stdin);
+stringstream ss(s); while(ss >> s3){} // 从 s 中逐个提取空格分隔的字符串输入s3，读到末尾时自动停止;
+遍历map时 for(auto& i : m) for(auto& [i, j] : m)都是可行的，前者需要通过i.first和i.second分别访问键和值。

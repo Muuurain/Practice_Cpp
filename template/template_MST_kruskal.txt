@@ -1,6 +1,7 @@
 // template_MST_kruskal
 
-适合稀疏图
+// 适合稀疏图
+// PS:该算法以0为起始点
 
 struct Edge {
     int u;        // 起点顶点
